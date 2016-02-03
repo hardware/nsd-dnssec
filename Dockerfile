@@ -12,8 +12,11 @@ RUN nsd-control-setup
 
 COPY keygen /usr/sbin/keygen
 COPY signzone /usr/sbin/signzone
+COPY ds-records /usr/sbin/ds-records
 
-RUN chmod +x /usr/sbin/keygen /usr/sbin/signzone
+RUN chmod +x /usr/sbin/keygen \
+             /usr/sbin/signzone \
+             /usr/sbin/ds-records
 
 VOLUME /zones /etc/nsd
 EXPOSE 53/udp

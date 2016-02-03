@@ -82,6 +82,22 @@ Notify slave servers... ok
 Done.
 ```
 
+Show your DS-Records (Delegation Signer) :
+
+```
+docker exec -ti nsd ds-records domain.tld
+
+> DS record 1 [Digest Type = SHA1] :
+domain.tld. 600 IN DS xxxx 14 1 xxxxxxxxxxxxxx
+
+> DS record 1 [Digest Type = SHA256] :
+domain.tld. 600 IN DS xxxx 14 2 xxxxxxxxxxxxxx
+
+> Public KSK Key :
+domain.tld. IN DNSKEY 257 3 14 xxxxxxxxxxxxxx ; {id = xxxx (ksk), size = 384b}
+
+```
+
 ### NSD config file sample :
 
 ```

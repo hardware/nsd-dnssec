@@ -13,13 +13,13 @@ echo "Generating ZSK & KSK keys for '${DOMAIN}'"
 ZSK=$(ldns-keygen -a ECDSAP384SHA384 -b 384 "$DOMAIN")
 KSK=$(ldns-keygen -k -a ECDSAP384SHA384 -b 384 "$DOMAIN")
 
+rm -f "$ZSK".ds "$KSK".ds
+
 mv "$ZSK".key     "K${DOMAIN}.zsk.key"
 mv "$ZSK".private "K${DOMAIN}.zsk.private"
-mv "$ZSK".ds      "K${DOMAIN}.zsk.ds"
 
 mv "$KSK".key     "K${DOMAIN}.ksk.key"
 mv "$KSK".private "K${DOMAIN}.ksk.private"
-mv "$KSK".ds      "K${DOMAIN}.ksk.ds"
 
 chmod 600 -- *.private
 exit 0
