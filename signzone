@@ -1,0 +1,26 @@
+#!/bin/sh
+
+DOMAIN="$1"
+
+if [ -z "$DOMAIN" ]; then
+  echo "Domain name must be defined" 1>&2
+  exit 1
+fi
+
+cd /zones || exit 1
+
+echo "Signing zone for ${DOMAIN}"
+ldns-signzone -n -p -s "$(head /dev/urandom | tr -dc A-Za-z0-9 | sha1sum | head -c 30)" \
+  -f "db.${DOMAIN}.signed" "db.${DOMAIN}" "K${DOMAIN}.zsk" "K${DOMAIN}.ksk"
+
+echo -n "NSD configuration rebuild... "
+nsd-control reconfig
+
+echo -n "Reloading zone for ${DOMAIN}... "
+nsd-control reload "$DOMAIN"
+
+echo -n "Notify slave servers... "
+nsd-control notify "$DOMAIN"
+
+echo "Done."
+exit 0
