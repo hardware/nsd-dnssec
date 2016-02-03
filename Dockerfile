@@ -1,7 +1,13 @@
 FROM alpine:3.3
 MAINTAINER Hardware <contact@meshup.net>
 
-RUN apk -U add nsd ldns ldns-tools openssl && rm -f /var/cache/apk/*
+RUN apk -U add \
+    nsd \
+    ldns \
+    ldns-tools \
+    openssl \
+  && rm -f /var/cache/apk/*
+
 RUN nsd-control-setup
 
 COPY keygen /usr/sbin/keygen

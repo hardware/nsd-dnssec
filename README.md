@@ -60,7 +60,7 @@ www                 IN                CNAME                hostname
 ...
 ```
 
-Generate ZSK and KSK keys (it may take some time)
+Generate ZSK and KSK keys (it may take some time...) :
 
 ```
 docker exec -ti nsd keygen domain.tld
@@ -85,6 +85,8 @@ Done.
 ### NSD config file sample :
 
 ```
+# /docker/nsd/conf/nsd.conf
+
 server:
   server-count: 1
   ip4-only: yes
