@@ -1,11 +1,13 @@
 FROM alpine:3.3
 MAINTAINER Hardware <contact@meshup.net>
 
+RUN echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
+
 RUN apk -U add \
     nsd \
     ldns \
     ldns-tools \
-    openssl \
+    libressl@testing \
   && rm -f /var/cache/apk/*
 
 COPY keygen /usr/sbin/keygen
