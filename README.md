@@ -61,6 +61,13 @@ www                 IN                CNAME                hostname
 ...
 ```
 
+Check your zone and nsd configuration :
+
+```
+docker exec -ti nsd nsd-checkzone domain.tld /zones/db.domain.tld
+docker exec -ti nsd nsd-checkconf /etc/nsd/nsd.conf
+```
+
 Generate ZSK and KSK keys (it may take some time...) :
 
 ```
