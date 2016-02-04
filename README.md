@@ -12,16 +12,16 @@ NSD is an authoritative only, high performance, simple and open source name serv
 
 ```
 docker run -d \
-  --name nsd
+  --name nsd \
   -p 53:53/udp \
-  -v /docker/nsd/conf:/etc/nsd
-  -v /docker/nsd/zones:/zones
+  -v /docker/nsd/conf:/etc/nsd \
+  -v /docker/nsd/zones:/zones \
   hardware/nsd-dnssec
 ```
 
 #### Setup :
 
-Put your zone dns file in `/docker/nsd/zones/db.domain.tld`
+Put your dns zone file in `/docker/nsd/zones/db.domain.tld`
 
 Example :
 
@@ -74,10 +74,10 @@ Then sign your dns zone :
 ```
 docker exec -ti nsd signzone domain.tld
 
-Signing zone for mondedie.fr
+Signing zone for domain.tld
 NSD configuration rebuild... reconfig start, read /etc/nsd/nsd.conf
 ok
-Reloading zone for mondedie.fr... ok
+Reloading zone for domain.tld... ok
 Notify slave servers... ok
 Done.
 ```
@@ -90,7 +90,7 @@ docker exec -ti nsd ds-records domain.tld
 > DS record 1 [Digest Type = SHA1] :
 domain.tld. 600 IN DS xxxx 14 1 xxxxxxxxxxxxxx
 
-> DS record 1 [Digest Type = SHA256] :
+> DS record 2 [Digest Type = SHA256] :
 domain.tld. 600 IN DS xxxx 14 2 xxxxxxxxxxxxxx
 
 > Public KSK Key :

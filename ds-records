@@ -10,7 +10,7 @@ fi
 echo -e "\n> DS record 1 [Digest Type = SHA1] :"
 ldns-key2ds -n -1 "/zones/db.${DOMAIN}.signed"
 
-echo -e "\n> DS record 1 [Digest Type = SHA256] :"
+echo -e "\n> DS record 2 [Digest Type = SHA256] :"
 ldns-key2ds -n -2 "/zones/db.${DOMAIN}.signed"
 
 echo -e "\n> Public KSK Key :"
