@@ -19,5 +19,5 @@ RUN chmod +x /usr/sbin/keygen \
              /usr/sbin/ds-records
 
 VOLUME /zones /etc/nsd
-EXPOSE 53/udp
+EXPOSE 53 53/udp
 CMD ["nsd", "-d"]

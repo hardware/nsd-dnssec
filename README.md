@@ -13,6 +13,7 @@ NSD is an authoritative only, high performance, simple and open source name serv
 ```
 docker run -d \
   --name nsd \
+  -p 53:53 \
   -p 53:53/udp \
   -v /docker/nsd/conf:/etc/nsd \
   -v /docker/nsd/zones:/zones \
@@ -129,6 +130,7 @@ nsd:
   image: hardware/nsd-dnssec
   container_name: nsd
   ports:
+    - "53:53"
     - "53:53/udp"
   volumes:
     - /docker/nsd/conf:/etc/nsd
