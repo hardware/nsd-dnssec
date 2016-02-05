@@ -68,7 +68,7 @@ docker exec -ti nsd nsd-checkzone domain.tld /zones/db.domain.tld
 docker exec -ti nsd nsd-checkconf /etc/nsd/nsd.conf
 ```
 
-Generate ZSK and KSK keys (it may take some time...) :
+Generate ZSK and KSK keys with ECDSAP384SHA384 algorithm (it may take some time...) :
 
 ```
 docker exec -ti nsd keygen domain.tld
@@ -77,7 +77,7 @@ Generating ZSK & KSK keys for 'domain.tld'
 Done.
 ```
 
-Then sign your dns zone :
+Then sign your dns zone (default expiration date = 1 month) :
 
 ```
 docker exec -ti nsd signzone domain.tld
@@ -88,7 +88,14 @@ ok
 Reloading zone for domain.tld... ok
 Notify slave servers... ok
 Done.
+
+# or set RRSIG RR expiration date :
+
+docker exec -ti nsd signzone domain.tld [YYYYMMDDhhmmss]
+docker exec -ti nsd signzone domain.tld 20170205220210
 ```
+
+**Do not forget to add a cron task to sign your zone periodically to avoid the expiration of RRSIG RR records**
 
 Show your DS-Records (Delegation Signer) :
 
