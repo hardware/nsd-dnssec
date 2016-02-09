@@ -1,14 +1,16 @@
 FROM alpine:3.3
 MAINTAINER Hardware <contact@meshup.net>
 
-RUN echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
+RUN echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+ && echo "@commuedge http://nl.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
 
 RUN apk -U add \
     nsd \
     ldns \
     ldns-tools \
     libressl@testing \
-  && rm -f /var/cache/apk/*
+    tini@commuedge \
+ && rm -f /var/cache/apk/*
 
 COPY keygen /usr/sbin/keygen
 COPY signzone /usr/sbin/signzone
@@ -22,4 +24,4 @@ RUN chmod +x /usr/sbin/keygen \
 
 VOLUME /zones /etc/nsd
 EXPOSE 53 53/udp
-CMD ["startup"]
+CMD ["/usr/bin/tini","--","/usr/sbin/startup"]
