@@ -68,6 +68,13 @@ docker exec -ti nsd nsd-checkzone domain.tld /zones/db.domain.tld
 docker exec -ti nsd nsd-checkconf /etc/nsd/nsd.conf
 ```
 
+Check the configuration without running the container first:
+
+```
+docker run --rm -v `pwd`/zones:/zones -ti hardware/nsd-dnssec nsd-checkzone domain.tld /zones/db.domain.tld
+docker run --rm -v `pwd`/conf:/etc/nsd -ti hardware/nsd-dnssec nsd-checkconf /etc/nsd/nsd.conf
+```
+
 Generate ZSK and KSK keys with ECDSAP384SHA384 algorithm (it may take some time...) :
 
 ```
