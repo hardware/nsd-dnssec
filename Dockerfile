@@ -2,9 +2,8 @@ FROM alpine:3.3
 MAINTAINER Hardware <contact@meshup.net>
 
 RUN echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
- && echo "@commuedge http://nl.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
-
-RUN apk -U add \
+ && echo "@commuedge http://nl.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
+ && apk -U add \
     nsd \
     ldns \
     ldns-tools \
@@ -24,4 +23,4 @@ RUN chmod +x /usr/sbin/keygen \
 
 VOLUME /zones /etc/nsd
 EXPOSE 53 53/udp
-CMD ["/usr/bin/tini","--","/usr/sbin/startup"]
+CMD ["tini","--","startup"]
