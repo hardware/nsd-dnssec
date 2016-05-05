@@ -15,14 +15,14 @@ docker run -d \
   --name nsd \
   -p 53:53 \
   -p 53:53/udp \
-  -v /docker/nsd/conf:/etc/nsd \
-  -v /docker/nsd/zones:/zones \
+  -v /mnt/docker/nsd/conf:/etc/nsd \
+  -v /mnt/docker/nsd/zones:/zones \
   hardware/nsd-dnssec
 ```
 
 #### Setup :
 
-Put your dns zone file in `/docker/nsd/zones/db.domain.tld`
+Put your dns zone file in `/mnt/docker/nsd/zones/db.domain.tld`
 
 Example :
 
@@ -123,7 +123,7 @@ domain.tld. IN DNSKEY 257 3 14 xxxxxxxxxxxxxx ; {id = xxxx (ksk), size = 384b}
 ### NSD config file sample :
 
 ```
-# /docker/nsd/conf/nsd.conf
+# /mnt/docker/nsd/conf/nsd.conf
 
 server:
   server-count: 1
@@ -154,8 +154,8 @@ nsd:
     - "53:53"
     - "53:53/udp"
   volumes:
-    - /docker/nsd/conf:/etc/nsd
-    - /docker/nsd/zones:/zones
+    - /mnt/docker/nsd/conf:/etc/nsd
+    - /mnt/docker/nsd/zones:/zones
 ```
 
 #### Run !
