@@ -8,6 +8,15 @@ NSD is an authoritative only, high performance, simple and open source name serv
 
 - Docker 1.0 or higher
 
+### Build-time variables
+
+- **NSD_VERSION** : version of NSD
+
+### Environment variables
+
+- **UID** : nsd user id *(default : 991)*
+- **GID** : nsd group id *(default : 991)*
+
 ### How to use
 
 ```
@@ -17,6 +26,7 @@ docker run -d \
   -p 53:53/udp \
   -v /mnt/docker/nsd/conf:/etc/nsd \
   -v /mnt/docker/nsd/zones:/zones \
+  -v /mnt/docker/nsd/db:/var/db/nsd \
   hardware/nsd-dnssec
 ```
 
@@ -156,6 +166,7 @@ nsd:
   volumes:
     - /mnt/docker/nsd/conf:/etc/nsd
     - /mnt/docker/nsd/zones:/zones
+    - /mnt/docker/nsd/db:/var/db/nsd
 ```
 
 #### Run !

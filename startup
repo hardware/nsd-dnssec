@@ -1,7 +1,13 @@
 #!/bin/sh
 
+if [ "$(grep -c 'nsd:' /etc/passwd)" != "1" ]; then
+  addgroup -g ${GID} nsd && adduser -H -s /sbin/nologin -D -G nsd -u ${UID} nsd
+fi
+
+chown -R ${UID}:${GID} /var/db/nsd/
+
 if [ ! -f /etc/nsd/nsd_server.pem ]; then
   nsd-control-setup
 fi
 
-nsd -d
+nsd -P /dev/null -d
