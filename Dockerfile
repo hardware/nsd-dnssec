@@ -1,11 +1,11 @@
-FROM alpine:3.3
+FROM alpine:3.4
 MAINTAINER Hardware <contact@meshup.net>
 
-ARG NSD_VERSION=4.1.9
+ARG NSD_VERSION=4.1.10
 
 ENV UID=991 GID=991
 
-RUN echo "@commuedge http://nl.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
+RUN echo "@commuedge https://nl.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
  && BUILD_DEPS=" \
     build-base \
     libevent-dev \
@@ -21,7 +21,7 @@ RUN echo "@commuedge http://nl.alpinelinux.org/alpine/edge/community" >> /etc/ap
  && cd /tmp && wget -q https://www.nlnetlabs.nl/downloads/nsd/nsd-${NSD_VERSION}.tar.gz \
  && tar xzf nsd-${NSD_VERSION}.tar.gz && cd nsd-${NSD_VERSION} \
  && ./configure \
-    CFLAGS="-g -O3 -flto -fPIE -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fstack-protector-strong -Wformat -Werror=format-security" \
+    CFLAGS="-O2 -flto -fPIE -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fstack-protector-strong -Wformat -Werror=format-security" \
     LDFLAGS="-Wl,-z,now -Wl,-z,relro" \
  && make && make install \
  && apk del ${BUILD_DEPS} \
