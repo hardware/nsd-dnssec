@@ -150,6 +150,12 @@ zone:
   zonefile: db.domain.tld.signed
   notify: ip_of_secondary_server NOKEY
   provide-xfr: ip_of_secondary_server NOKEY
+  
+  # don't answer VERSION.BIND and VERSION.SERVER CHAOS class queries
+    hide-version: yes
+
+  # identify the server (CH TXT ID.SERVER entry).
+    identity: ""
 ```
 
 ### Docker-compose
