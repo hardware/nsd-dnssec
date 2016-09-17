@@ -20,7 +20,6 @@ RUN echo "@community https://nl.alpinelinux.org/alpine/v3.4/community" >> /etc/a
     ldns-tools \
     libevent \
     openssl \
-    su-exec \
     tini@community \
  && cd /tmp \
  && wget -q https://www.nlnetlabs.nl/downloads/nsd/nsd-${NSD_VERSION}.tar.gz \
