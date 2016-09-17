@@ -1,13 +1,13 @@
 FROM alpine:3.4
 MAINTAINER Hardware <contact@meshup.net>
 
-ARG NSD_VERSION=4.1.11
-ARG SHA256_NSD="c7712fd05eb0ab97040738e01d9369d02b89c0a7fa0943fd5bfc43b2111a92df"
+ARG NSD_VERSION=4.1.12
+ARG SHA256_NSD="fd1979dff1fba55310fd4f439dc9f3f4701d435c0ec4fb9af533e12c7f27d5de"
 ARG GPG_NSD="EDFA A3F2 CA4E 6EB0 5681  AF8E 9F6F 1C2D 7E04 5F8D"
 
 ENV UID=991 GID=991
 
-RUN echo "@commuedge https://nl.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
+RUN echo "@community https://nl.alpinelinux.org/alpine/v3.4/community" >> /etc/apk/repositories \
  && BUILD_DEPS=" \
     gnupg \
     build-base \
@@ -20,7 +20,8 @@ RUN echo "@commuedge https://nl.alpinelinux.org/alpine/edge/community" >> /etc/a
     ldns-tools \
     libevent \
     openssl \
-    tini@commuedge \
+    su-exec \
+    tini@community \
  && cd /tmp \
  && wget -q https://www.nlnetlabs.nl/downloads/nsd/nsd-${NSD_VERSION}.tar.gz \
  && wget -q https://www.nlnetlabs.nl/downloads/nsd/nsd-${NSD_VERSION}.tar.gz.asc \
@@ -53,4 +54,4 @@ RUN chmod +x /usr/sbin/keygen \
 
 VOLUME /zones /etc/nsd /var/db/nsd
 EXPOSE 53 53/udp
-CMD ["/sbin/tini","--","startup"]
+CMD ["startup"]
