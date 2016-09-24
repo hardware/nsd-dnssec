@@ -2,8 +2,12 @@ FROM alpine:3.4
 MAINTAINER Hardware <contact@meshup.net>
 
 ARG NSD_VERSION=4.1.12
-ARG SHA256_NSD="fd1979dff1fba55310fd4f439dc9f3f4701d435c0ec4fb9af533e12c7f27d5de"
-ARG GPG_NSD="EDFA A3F2 CA4E 6EB0 5681  AF8E 9F6F 1C2D 7E04 5F8D"
+
+# https://pgp.mit.edu/pks/lookup?search=0x7E045F8D&fingerprint=on&op=index
+# pub  4096R/7E045F8D 2011-04-21 W.C.A. Wijngaards <wouter@nlnetlabs.nl>
+ARG GPG_SHORTID="0x7E045F8D"
+ARG GPG_FINGERPRINT="EDFA A3F2 CA4E 6EB0 5681  AF8E 9F6F 1C2D 7E04 5F8D"
+ARG SHA256_HASH="fd1979dff1fba55310fd4f439dc9f3f4701d435c0ec4fb9af533e12c7f27d5de"
 
 ENV UID=991 GID=991
 
@@ -26,12 +30,12 @@ RUN echo "@community https://nl.alpinelinux.org/alpine/v3.4/community" >> /etc/a
  && wget -q https://www.nlnetlabs.nl/downloads/nsd/nsd-${NSD_VERSION}.tar.gz.asc \
  && echo "Verifying both integrity and authenticity of nsd-${NSD_VERSION}.tar.gz..." \
  && CHECKSUM=$(sha256sum nsd-${NSD_VERSION}.tar.gz | awk '{print $1}') \
- && if [ "${CHECKSUM}" != "${SHA256_NSD}" ]; then echo "Warning! Checksum does not match!" && exit 1; fi \
- && gpg --recv-keys 7E045F8D \
+ && if [ "${CHECKSUM}" != "${SHA256_HASH}" ]; then echo "Warning! Checksum does not match!" && exit 1; fi \
+ && gpg --keyserver keys.gnupg.net --recv-keys ${GPG_SHORTID} \
  && FINGERPRINT="$(LANG=C gpg --verify nsd-${NSD_VERSION}.tar.gz.asc nsd-${NSD_VERSION}.tar.gz 2>&1 \
   | sed -n "s#Primary key fingerprint: \(.*\)#\1#p")" \
  && if [ -z "${FINGERPRINT}" ]; then echo "Warning! Invalid GPG signature!" && exit 1; fi \
- && if [ "${FINGERPRINT}" != "${GPG_NSD}" ]; then echo "Warning! Wrong GPG fingerprint!" && exit 1; fi \
+ && if [ "${FINGERPRINT}" != "${GPG_FINGERPRINT}" ]; then echo "Warning! Wrong GPG fingerprint!" && exit 1; fi \
  && echo "All seems good, now unpacking nsd-${NSD_VERSION}.tar.gz..." \
  && tar xzf nsd-${NSD_VERSION}.tar.gz && cd nsd-${NSD_VERSION} \
  && ./configure \
@@ -41,16 +45,15 @@ RUN echo "@community https://nl.alpinelinux.org/alpine/v3.4/community" >> /etc/a
  && apk del ${BUILD_DEPS} \
  && rm -rf /var/cache/apk/* /tmp/* /root/.gnupg
 
-COPY keygen /usr/sbin/keygen
-COPY signzone /usr/sbin/signzone
-COPY ds-records /usr/sbin/ds-records
-COPY startup /usr/sbin/startup
+COPY keygen /usr/local/bin/keygen
+COPY signzone /usr/local/bin/signzone
+COPY ds-records /usr/local/bin/ds-records
+COPY run.sh /usr/local/bin/run.sh
 
-RUN chmod +x /usr/sbin/keygen \
-             /usr/sbin/signzone \
-             /usr/sbin/ds-records \
-             /usr/sbin/startup
+RUN chmod +x /usr/local/bin/*
 
 VOLUME /zones /etc/nsd /var/db/nsd
+
 EXPOSE 53 53/udp
-CMD ["startup"]
+
+CMD ["run.sh"]
