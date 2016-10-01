@@ -1,13 +1,13 @@
 FROM alpine:3.4
 MAINTAINER Hardware <contact@meshup.net>
 
-ARG NSD_VERSION=4.1.12
+ARG NSD_VERSION=4.1.13
 
 # https://pgp.mit.edu/pks/lookup?search=0x7E045F8D&fingerprint=on&op=index
 # pub  4096R/7E045F8D 2011-04-21 W.C.A. Wijngaards <wouter@nlnetlabs.nl>
 ARG GPG_SHORTID="0x7E045F8D"
 ARG GPG_FINGERPRINT="EDFA A3F2 CA4E 6EB0 5681  AF8E 9F6F 1C2D 7E04 5F8D"
-ARG SHA256_HASH="fd1979dff1fba55310fd4f439dc9f3f4701d435c0ec4fb9af533e12c7f27d5de"
+ARG SHA256_HASH="c45cd4ba2101a027e133b2be44db9378e27602e05f09a5ef25019e1ae45291af"
 
 ENV UID=991 GID=991
 
