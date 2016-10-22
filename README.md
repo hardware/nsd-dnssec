@@ -54,13 +54,14 @@ $TTL 7200
 ; NAMESERVERS
 
 @                   IN                NS                   ns1.domain.tld.
-@                   IN                NS                   ns6.gandi.net.
+@                   IN                NS                   ns2.domain.tld.
 
 ; A RECORDS
 
 @                   IN                A                    IPv4
 hostname            IN                A                    IPv4
 ns1                 IN                A                    IPv4
+ns2                 IN                A                    IPv4
 
 ; CNAME RECORDS
 
@@ -75,7 +76,7 @@ www                 IN                CNAME                hostname
 
 Put nsd config in `/mnt/docker/nsd/conf/nsd.conf`
 
-Example :
+Primary server example :
 
 ```
 server:
@@ -88,11 +89,48 @@ server:
 remote-control:
   control-enable: yes
 
+key:
+   name: "sec_key"
+   algorithm: hmac-sha256
+   secret: "WU9VUl9TRUNSRVRfS0VZCg==" # echo "YOUR_SECRET_KEY" | base64
+
 zone:
   name: domain.tld
   zonefile: db.domain.tld.signed
-  notify: ip_of_secondary_server NOKEY
-  provide-xfr: ip_of_secondary_server NOKEY
+  notify: ip_of_secondary_server sec_key
+  notify: ip_of_secondary_public_server NOKEY
+  provide-xfr: ip_of_secondary_server sec_key
+  provide-xfr: ip_of_secondary_public_server NOKEY
+
+# "ip_of_secondary_server" is your secondary nameserver IP
+# "ip_of_secondary_public_server" can be your registrar's nameserver IP
+```
+
+Secondary server example (optional) :
+
+```
+server:
+  server-count: 1
+  ip4-only: yes
+  hide-version: yes
+  identity: ""
+  zonesdir: "/zones"
+
+remote-control:
+  control-enable: yes
+
+key:
+   name: "sec_key"
+   algorithm: hmac-sha256
+   secret: "WU9VUl9TRUNSRVRfS0VZCg=="
+
+zone:
+    name: domain.tld
+    zonefile: db.domain.tld.signed
+    allow-notify: ip_of_primary_server sec_key
+    request-xfr: AXFR ip_of_primary_server sec_key
+
+# "ip_of_primary_server" is your primary nameserver IP
 ```
 
 Check your zone and nsd configuration :
