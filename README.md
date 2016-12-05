@@ -29,8 +29,8 @@ NSD is an authoritative only, high performance, simple and open source name serv
 
 | Variable | Description | Type | Default value |
 | -------- | ----------- | ---- | ------------- |
-| **GID** | nsd user id | *optional* | 991
-| **UID** | nsd group id | *optional* | 991
+| **UID** | nsd user id | *optional* | 991
+| **GID** | nsd group id | *optional* | 991
 
 ### Setup :
 
