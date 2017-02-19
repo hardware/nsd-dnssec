@@ -1,17 +1,17 @@
-FROM alpine:3.4
+FROM alpine:3.5
 MAINTAINER Hardware <contact@meshup.net>
 
-ARG NSD_VERSION=4.1.14
+ARG NSD_VERSION=4.1.15
 
 # https://pgp.mit.edu/pks/lookup?search=0x7E045F8D&fingerprint=on&op=index
 # pub  4096R/7E045F8D 2011-04-21 W.C.A. Wijngaards <wouter@nlnetlabs.nl>
 ARG GPG_SHORTID="0x7E045F8D"
 ARG GPG_FINGERPRINT="EDFA A3F2 CA4E 6EB0 5681  AF8E 9F6F 1C2D 7E04 5F8D"
-ARG SHA256_HASH="bdfc61c5f3bf11febd8f4776eef1d4f2d95ed70f12f11d4eeee943c186ffd802"
+ARG SHA256_HASH="494a862cfcd26a525a4bf06306eb7ab0387b34678ac6d37767507438e3a23a4b"
 
 ENV UID=991 GID=991
 
-RUN echo "@community https://nl.alpinelinux.org/alpine/v3.4/community" >> /etc/apk/repositories \
+RUN echo "@community https://nl.alpinelinux.org/alpine/v3.5/community" >> /etc/apk/repositories \
  && BUILD_DEPS=" \
     gnupg \
     build-base \
