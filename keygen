@@ -1,13 +1,14 @@
 #!/bin/sh
 
 DOMAIN="$1"
+DIRECTORY=${2:-"/zones"}
 
 if [ -z "$DOMAIN" ]; then
   echo "Domain name must be defined" 1>&2
   exit 1
 fi
 
-cd /zones || exit 1
+cd ${DIRECTORY} || exit 1
 
 echo "Generating ZSK & KSK keys for '${DOMAIN}'"
 ZSK=$(ldns-keygen -a ECDSAP384SHA384 -b 384 "$DOMAIN")

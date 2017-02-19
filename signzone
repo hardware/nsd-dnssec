@@ -2,6 +2,7 @@
 
 DOMAIN="$1"
 EXPIRATION_DATE="$2"
+DIRECTORY=${2:-"/zones"}
 
 if [ -z "$DOMAIN" ]; then
   echo "Domain name must be defined" 1>&2
@@ -12,7 +13,7 @@ if [ -n "$EXPIRATION_DATE" ]; then
   arg="-e${EXPIRATION_DATE}"
 fi
 
-cd /zones || exit 1
+cd ${DIRECTORY} || exit 1
 
 echo "Signing zone for ${DOMAIN}"
 ldns-signzone -n -p ${arg} -s "$(head /dev/urandom | tr -dc A-Za-z0-9 | sha1sum | head -c 30)" \
