@@ -1,5 +1,7 @@
 FROM alpine:3.5
-MAINTAINER Hardware <contact@meshup.net>
+
+LABEL description "Simple DNS authoritative server with DNSSEC support" \
+      maintainer="Hardware <contact@meshup.net>"
 
 ARG NSD_VERSION=4.1.15
 
