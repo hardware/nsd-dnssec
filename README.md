@@ -2,14 +2,14 @@
 
 ![nsd](https://i.imgur.com/tPgkQVB.png "nsd")
 
-### What is this ?
+### What is this?
 
 NSD is an authoritative only, high performance, simple and open source name server.
 
 ### Features
 
 - Lightweight & secure image (no root process)
-- Based on Alpine Linux 3.4
+- Based on Alpine Linux 3.5
 - Latest NSD version (4.1.15)
 - ZSK and KSK keys, DS-Records management and zone signature with ldns
 
@@ -32,11 +32,11 @@ NSD is an authoritative only, high performance, simple and open source name serv
 | **UID** | nsd user id | *optional* | 991
 | **GID** | nsd group id | *optional* | 991
 
-### Setup :
+### Setup
 
-Put your dns zone file in `/mnt/docker/nsd/zones/db.domain.tld`
+Put your dns zone file in `/mnt/docker/nsd/zones/db.domain.tld`.
 
-Example :
+Example:
 
 ```
 $ORIGIN domain.tld.
@@ -74,11 +74,11 @@ www                 IN                CNAME                hostname
 ...
 ```
 
-Put nsd config in `/mnt/docker/nsd/conf/nsd.conf`
+Put the nsd config in `/mnt/docker/nsd/conf/nsd.conf`.
 
-Primary server example :
+Primary server example:
 
-```
+```yaml
 server:
   server-count: 1
   ip4-only: yes
@@ -90,9 +90,9 @@ remote-control:
   control-enable: yes
 
 key:
-   name: "sec_key"
-   algorithm: hmac-sha256
-   secret: "WU9VUl9TRUNSRVRfS0VZCg==" # echo "YOUR_SECRET_KEY" | base64
+  name: "sec_key"
+  algorithm: hmac-sha256
+  secret: "WU9VUl9TRUNSRVRfS0VZCg==" # echo "YOUR_SECRET_KEY" | base64
 
 zone:
   name: domain.tld
@@ -106,9 +106,9 @@ zone:
 # "ip_of_secondary_public_server" can be your registrar's nameserver IP
 ```
 
-Secondary server example (optional) :
+Secondary server example (optional):
 
-```
+```yaml
 server:
   server-count: 1
   ip4-only: yes
@@ -120,20 +120,20 @@ remote-control:
   control-enable: yes
 
 key:
-   name: "sec_key"
-   algorithm: hmac-sha256
-   secret: "WU9VUl9TRUNSRVRfS0VZCg=="
+  name: "sec_key"
+  algorithm: hmac-sha256
+  secret: "WU9VUl9TRUNSRVRfS0VZCg=="
 
 zone:
-    name: domain.tld
-    zonefile: db.domain.tld.signed
-    allow-notify: ip_of_primary_server sec_key
-    request-xfr: AXFR ip_of_primary_server sec_key
+  name: domain.tld
+  zonefile: db.domain.tld.signed
+  allow-notify: ip_of_primary_server sec_key
+  request-xfr: AXFR ip_of_primary_server sec_key
 
 # "ip_of_primary_server" is your primary nameserver IP
 ```
 
-Check your zone and nsd configuration :
+Check your zone and nsd configuration:
 
 ```
 cd /mnt/docker/nsd
@@ -145,7 +145,7 @@ docker run --rm -v `pwd`/conf:/etc/nsd -ti hardware/nsd-dnssec nsd-checkconf /et
 
 #### Docker-compose.yml
 
-```
+```yaml
 nsd:
   image: hardware/nsd-dnssec
   container_name: nsd
@@ -158,7 +158,7 @@ nsd:
     - /mnt/docker/nsd/db:/var/db/nsd
 ```
 
-#### Run !
+#### Run it
 
 ```
 docker-compose up -d
@@ -166,19 +166,19 @@ docker-compose up -d
 
 ### Generating DNSSEC keys and signed zone
 
-Generate ZSK and KSK keys with ECDSAP384SHA384 algorithm (it may take some time...) :
+Generate ZSK and KSK keys with ECDSAP384SHA384 algorithm (it may take some time...):
 
 ```
-docker exec -ti nsd keygen domain.tld
+docker-compose exec nsd keygen domain.tld
 
 Generating ZSK & KSK keys for 'domain.tld'
 Done.
 ```
 
-Then sign your dns zone (default expiration date = 1 month) :
+Then sign your dns zone (default expiration date is 1 month):
 
 ```
-docker exec -ti nsd signzone domain.tld
+docker-compose exec nsd signzone domain.tld
 
 Signing zone for domain.tld
 NSD configuration rebuild... reconfig start, read /etc/nsd/nsd.conf
@@ -189,16 +189,16 @@ Done.
 
 # or set custom RRSIG RR expiration date :
 
-docker exec -ti nsd signzone domain.tld [YYYYMMDDhhmmss]
-docker exec -ti nsd signzone domain.tld 20170205220210
+docker-compose exec nsd signzone domain.tld [YYYYMMDDhhmmss]
+docker-compose exec nsd signzone domain.tld 20170205220210
 ```
 
-:warning: **Do not forget to add a cron task to increment the serial and sign your zone periodically to avoid the expiration of RRSIG RR records !**
+:warning: **Do not forget to add a cron task to increment the serial and sign your zone periodically to avoid the expiration of RRSIG RR records!**
 
-Show your DS-Records (Delegation Signer) :
+Show your DS-Records (Delegation Signer):
 
 ```
-docker exec -ti nsd ds-records domain.tld
+docker-compose exec nsd ds-records domain.tld
 
 > DS record 1 [Digest Type = SHA1] :
 domain.tld. 600 IN DS xxxx 14 1 xxxxxxxxxxxxxx
@@ -208,10 +208,9 @@ domain.tld. 600 IN DS xxxx 14 2 xxxxxxxxxxxxxx
 
 > Public KSK Key :
 domain.tld. IN DNSKEY 257 3 14 xxxxxxxxxxxxxx ; {id = xxxx (ksk), size = 384b}
-
 ```
 
-Restart the DNS server to take into account the changes :
+Restart the DNS server to take the changes into account:
 
 ```
 docker-compose restart nsd
