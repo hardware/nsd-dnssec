@@ -90,7 +90,7 @@ remote-control:
   control-enable: yes
 
 key:
-  ame: "sec_key"
+  name: "sec_key"
   algorithm: hmac-sha256
   secret: "WU9VUl9TRUNSRVRfS0VZCg==" # echo "YOUR_SECRET_KEY" | base64
 
