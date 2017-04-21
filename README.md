@@ -166,7 +166,7 @@ docker-compose up -d
 
 ### Generating DNSSEC keys and signed zone
 
-Generate ZSK and KSK keys with ECDSAP384SHA384 algorithm (it may take some time...):
+Generate ZSK and KSK keys with ECDSAP384SHA384 algorithm (it may take some time; you can install `haveged` in your base system to speed it up):
 
 ```
 docker-compose exec nsd keygen domain.tld
