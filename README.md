@@ -150,13 +150,15 @@ nsd:
   image: hardware/nsd-dnssec
   container_name: nsd
   ports:
-    - "53:53"
-    - "53:53/udp"
+    - "PUBLIC_IP_ADDRESS:53:53"
+    - "PUBLIC_IP_ADDRESS:53:53/udp"
   volumes:
     - /mnt/docker/nsd/conf:/etc/nsd
     - /mnt/docker/nsd/zones:/zones
     - /mnt/docker/nsd/db:/var/db/nsd
 ```
+
+**Note** : replace `PUBLIC_IP_ADDRESS` with your public IP address.
 
 #### Run it
 
