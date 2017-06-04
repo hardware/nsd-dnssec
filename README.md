@@ -9,7 +9,7 @@ NSD is an authoritative only, high performance, simple and open source name serv
 ### Features
 
 - Lightweight & secure image (no root process)
-- Based on Alpine Linux 3.5
+- Based on Alpine Linux
 - Latest NSD version (4.1.15)
 - ZSK and KSK keys, DS-Records management and zone signature with ldns
 

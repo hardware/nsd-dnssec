@@ -1,4 +1,4 @@
-FROM alpine:3.5
+FROM alpine:3.6
 
 LABEL description "Simple DNS authoritative server with DNSSEC support" \
       maintainer="Hardware <contact@meshup.net>"
@@ -13,15 +13,15 @@ ARG SHA256_HASH="7f8367ad23cc5cddffa885e7e2f549123c8b4123db9726df41d99f255d6baab
 
 ENV UID=991 GID=991
 
-RUN echo "@community https://nl.alpinelinux.org/alpine/v3.5/community" >> /etc/apk/repositories \
- && BUILD_DEPS=" \
+RUN echo "@community https://nl.alpinelinux.org/alpine/v3.6/community" >> /etc/apk/repositories \
+ && apk -U upgrade \
+ && apk add -t build-dependencies \
     gnupg \
     build-base \
     libevent-dev \
     openssl-dev \
-    ca-certificates" \
- && apk -U add \
-    ${BUILD_DEPS} \
+    ca-certificates \
+ && apk add \
     ldns \
     ldns-tools \
     libevent \
@@ -44,7 +44,7 @@ RUN echo "@community https://nl.alpinelinux.org/alpine/v3.5/community" >> /etc/a
     CFLAGS="-O2 -flto -fPIE -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fstack-protector-strong -Wformat -Werror=format-security" \
     LDFLAGS="-Wl,-z,now -Wl,-z,relro" \
  && make && make install \
- && apk del ${BUILD_DEPS} \
+ && apk del build-dependencies \
  && rm -rf /var/cache/apk/* /tmp/* /root/.gnupg
 
 COPY keygen /usr/local/bin/keygen
