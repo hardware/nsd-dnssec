@@ -33,7 +33,9 @@ RUN echo "@community https://nl.alpinelinux.org/alpine/v3.6/community" >> /etc/a
  && echo "Verifying both integrity and authenticity of nsd-${NSD_VERSION}.tar.gz..." \
  && CHECKSUM=$(sha256sum nsd-${NSD_VERSION}.tar.gz | awk '{print $1}') \
  && if [ "${CHECKSUM}" != "${SHA256_HASH}" ]; then echo "Warning! Checksum does not match!" && exit 1; fi \
- && gpg --keyserver keys.gnupg.net --recv-keys ${GPG_SHORTID} \
+ && gpg --keyserver pgp.mit.edu --recv-keys ${GPG_SHORTID} || \
+    gpg --keyserver keyserver.pgp.com --recv-keys ${GPG_SHORTID} || \
+    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys ${GPG_SHORTID} \
  && FINGERPRINT="$(LANG=C gpg --verify nsd-${NSD_VERSION}.tar.gz.asc nsd-${NSD_VERSION}.tar.gz 2>&1 \
   | sed -n "s#Primary key fingerprint: \(.*\)#\1#p")" \
  && if [ -z "${FINGERPRINT}" ]; then echo "Warning! Invalid GPG signature!" && exit 1; fi \
