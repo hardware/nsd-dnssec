@@ -16,17 +16,17 @@ ENV UID=991 GID=991
 RUN echo "@community https://nl.alpinelinux.org/alpine/v3.6/community" >> /etc/apk/repositories \
  && apk -U upgrade \
  && apk add -t build-dependencies \
-    gnupg \
-    build-base \
-    libevent-dev \
-    openssl-dev \
-    ca-certificates \
+      gnupg \
+      build-base \
+      libevent-dev \
+      openssl-dev \
+      ca-certificates \
  && apk add \
-    ldns \
-    ldns-tools \
-    libevent \
-    openssl \
-    tini@community \
+      ldns \
+      ldns-tools \
+      libevent \
+      openssl \
+      tini@community \
  && cd /tmp \
  && wget -q https://www.nlnetlabs.nl/downloads/nsd/nsd-${NSD_VERSION}.tar.gz \
  && wget -q https://www.nlnetlabs.nl/downloads/nsd/nsd-${NSD_VERSION}.tar.gz.asc \
