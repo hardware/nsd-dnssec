@@ -51,13 +51,7 @@ RUN echo "@community https://nl.alpinelinux.org/alpine/v3.7/community" >> /etc/a
  && apk del build-dependencies \
  && rm -rf /var/cache/apk/* /tmp/* /root/.gnupg
 
-COPY keygen /usr/local/bin/keygen
-COPY signzone /usr/local/bin/signzone
-COPY ds-records /usr/local/bin/ds-records
-COPY run.sh /usr/local/bin/run.sh
-
+COPY bin /usr/local/bin
 VOLUME /zones /etc/nsd /var/db/nsd
-
 EXPOSE 53 53/udp
-
 CMD ["run.sh"]
