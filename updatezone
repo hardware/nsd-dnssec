@@ -1,0 +1,20 @@
+#!/bin/sh
+
+DOMAIN="$1"
+
+if [ -z "$DOMAIN" ]; then
+  echo "Domain name must be defined" 1>&2
+  exit 1
+fi
+
+echo -n "NSD configuration rebuild... "
+nsd-control reconfig
+
+echo -n "Reloading zone for ${DOMAIN}... "
+nsd-control reload "$DOMAIN"
+
+echo -n "Notify slave servers... "
+nsd-control notify "$DOMAIN"
+
+echo "Done."
+exit 0
