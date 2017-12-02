@@ -16,30 +16,32 @@ ENV UID=991 GID=991
 RUN echo "@community https://nl.alpinelinux.org/alpine/v3.6/community" >> /etc/apk/repositories \
  && apk -U upgrade \
  && apk add -t build-dependencies \
-    gnupg \
-    build-base \
-    libevent-dev \
-    openssl-dev \
-    ca-certificates \
+      gnupg \
+      build-base \
+      libevent-dev \
+      openssl-dev \
+      ca-certificates \
  && apk add \
-    ldns \
-    ldns-tools \
-    libevent \
-    openssl \
-    tini@community \
+      ldns \
+      ldns-tools \
+      libevent \
+      openssl \
+      tini@community \
  && cd /tmp \
  && wget -q https://www.nlnetlabs.nl/downloads/nsd/nsd-${NSD_VERSION}.tar.gz \
  && wget -q https://www.nlnetlabs.nl/downloads/nsd/nsd-${NSD_VERSION}.tar.gz.asc \
  && echo "Verifying both integrity and authenticity of nsd-${NSD_VERSION}.tar.gz..." \
  && CHECKSUM=$(sha256sum nsd-${NSD_VERSION}.tar.gz | awk '{print $1}') \
- && if [ "${CHECKSUM}" != "${SHA256_HASH}" ]; then echo "Warning! Checksum does not match!" && exit 1; fi \
- && gpg --keyserver pgp.mit.edu --recv-keys ${GPG_SHORTID} || \
+ && if [ "${CHECKSUM}" != "${SHA256_HASH}" ]; then echo "ERROR: Checksum does not match!" && exit 1; fi \
+ && ( \
+    gpg --keyserver pgp.mit.edu --recv-keys ${GPG_SHORTID} || \
     gpg --keyserver keyserver.pgp.com --recv-keys ${GPG_SHORTID} || \
     gpg --keyserver ha.pool.sks-keyservers.net --recv-keys ${GPG_SHORTID} \
+    ) \
  && FINGERPRINT="$(LANG=C gpg --verify nsd-${NSD_VERSION}.tar.gz.asc nsd-${NSD_VERSION}.tar.gz 2>&1 \
   | sed -n "s#Primary key fingerprint: \(.*\)#\1#p")" \
- && if [ -z "${FINGERPRINT}" ]; then echo "Warning! Invalid GPG signature!" && exit 1; fi \
- && if [ "${FINGERPRINT}" != "${GPG_FINGERPRINT}" ]; then echo "Warning! Wrong GPG fingerprint!" && exit 1; fi \
+ && if [ -z "${FINGERPRINT}" ]; then echo "ERROR: Invalid GPG signature!" && exit 1; fi \
+ && if [ "${FINGERPRINT}" != "${GPG_FINGERPRINT}" ]; then echo "ERROR: Wrong GPG fingerprint!" && exit 1; fi \
  && echo "All seems good, now unpacking nsd-${NSD_VERSION}.tar.gz..." \
  && tar xzf nsd-${NSD_VERSION}.tar.gz && cd nsd-${NSD_VERSION} \
  && ./configure \
