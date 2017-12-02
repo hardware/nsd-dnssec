@@ -1,4 +1,4 @@
-FROM alpine:3.6
+FROM alpine:3.7
 
 LABEL description "Simple DNS authoritative server with DNSSEC support" \
       maintainer="Hardware <contact@meshup.net>"
@@ -13,7 +13,7 @@ ARG SHA256_HASH="8c1db23c5ad44c6410874161e78f785475d3f08ed0daae57fe56c44e33a89c0
 
 ENV UID=991 GID=991
 
-RUN echo "@community https://nl.alpinelinux.org/alpine/v3.6/community" >> /etc/apk/repositories \
+RUN echo "@community https://nl.alpinelinux.org/alpine/v3.7/community" >> /etc/apk/repositories \
  && apk -U upgrade \
  && apk add -t build-dependencies \
       gnupg \
