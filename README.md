@@ -216,7 +216,7 @@ expiration_date=$(date -d "+6 months" +'%Y%m%d%H%M%S')
 sed -i -e "s/20[0-9][0-9]\{7\} ; Serial/${serial} ; Serial/g" \
        -e "${tlsa_line_number}s/.*/${tlsa_dns_record}/" $zonefile
 
-if docker exec nsd nsd-checkzone "$domain" /zones/"$zonename" | grep -q "zone ${$domain} is ok"; then
+if docker exec nsd nsd-checkzone "$domain" /zones/"$zonename" | grep -q "zone ${domain} is ok"; then
   docker exec nsd signzone "$domain" "$expiration_date"
 fi
 ```
