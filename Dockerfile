@@ -3,13 +3,13 @@ FROM alpine:3.8
 LABEL description "Simple DNS authoritative server with DNSSEC support" \
       maintainer="Hardware <contact@meshup.net>"
 
-ARG NSD_VERSION=4.1.22
+ARG NSD_VERSION=4.1.23
 
 # https://pgp.mit.edu/pks/lookup?search=0x7E045F8D&fingerprint=on&op=index
 # pub  4096R/7E045F8D 2011-04-21 W.C.A. Wijngaards <wouter@nlnetlabs.nl>
 ARG GPG_SHORTID="0x7E045F8D"
 ARG GPG_FINGERPRINT="EDFA A3F2 CA4E 6EB0 5681  AF8E 9F6F 1C2D 7E04 5F8D"
-ARG SHA256_HASH="f186e86705768a35ecb6ac18d1ee4eeec2745fcd1feab38e64f89c5eb5aa049c"
+ARG SHA256_HASH="f60ed8bd676b94a1c83c4335e8a51d61baa1a952660ecf21673a1414244b85fd"
 
 ENV UID=991 GID=991
 
