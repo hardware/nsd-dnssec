@@ -1,0 +1,33 @@
+$ORIGIN example.org.
+$TTL 3600
+
+
+@       IN      SOA (
+    ns1.example.org.        ; primary nameserver
+    hostmaster.example.org. ; admin email
+    2019043001              ; Serial
+    3600                    ; Refresh
+    1800                    ; Retry
+    1209600                 ; Expire
+    600                     ; Minimum
+)
+
+; NAMESERVERS
+
+@                   IN                NS                   ns1.example.org.
+@                   IN                NS                   ns2.example.org.
+
+; A RECORDS
+
+@                   IN                A                    10.20.30.40
+hostname            IN                A                    10.20.30.40
+ns1                 IN                A                    10.20.30.40
+ns2                 IN                A                    10.20.30.40
+
+; CNAME RECORDS
+
+www                 IN                CNAME                hostname
+
+; MAIL RECORDS
+
+@                   IN                MX          10       hostname.example.org.
