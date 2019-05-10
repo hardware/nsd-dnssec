@@ -23,7 +23,7 @@ NSD is an authoritative only, high performance, simple and open source name serv
 ### Ports
 
 - **53/tcp**
-- **53/udp** (for AXFR zones tranfert queries)
+- **53/udp** (for AXFR zones transfer queries)
 
 ### Environment variables
 
