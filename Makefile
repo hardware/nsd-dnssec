@@ -11,6 +11,10 @@ build:
 	docker build -t $(NAME) .
 
 init:
+	-docker rm -f nsd_unsigned nsd_default
+
+	sleep 2
+
 	docker run \
 		-d \
 		--name nsd_unsigned \
